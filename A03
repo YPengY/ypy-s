@@ -1,0 +1,640 @@
+/* Assignment03: Yahtzee Scorer
+ *
+ * Author: Yin Peng yu
+ *
+ * More complete description here...
+ */
+
+#include <cctype>		
+#include <cstdlib>		
+#include <ctime>		
+#include <iostream>		
+#include <iomanip>    
+using namespace std;
+int SEED = time(0);
+
+void Order(int& num1, int& num2, int& num3, int& num4, int& num5)
+{
+    for (int i = 0; i < 4; i++) 
+    {
+        for (int j = 0; j < 4 - i; j++) 
+        {
+            if (num1 > num2)
+                swap(num1, num2);       
+            if (num2 > num3)
+                swap(num2, num3);  
+            if (num3 > num4) 
+                swap(num3, num4);     
+            if (num4 > num5) 
+                swap(num4, num5);
+        }
+    }
+    return;
+}
+
+int Ones_check(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    if (num1 == 1 || num2 == 1 || num3 == 1 || num4 == 1 || num5 == 1) {
+        Isexistence = true;
+    }
+    else {
+        Isexistence = false;
+    }
+    return Isexistence;
+}
+
+int Twos_check(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    if (num1 == 2 || num2 == 2 || num3 == 2 || num4 == 2 || num5 == 2) {
+        Isexistence = true;
+    }
+    else {
+        Isexistence = false;
+    }
+    return Isexistence;
+}
+
+int Threes_check(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    if (num1 == 3 || num2 == 3 || num3 == 3 || num4 == 3 || num5 == 3) {
+        Isexistence = true;
+    }
+    else {
+        Isexistence = false;
+    }
+    return Isexistence;
+
+}
+
+int Fours_check(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    if (num1 == 4 || num2 == 4 || num3 == 4 || num4 == 4 || num5 == 4) {
+        Isexistence = true;
+    }
+    else {
+        Isexistence = false;
+    }
+    return Isexistence;
+}
+
+int Fives_check(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    if (num1 == 5 || num2 == 5 || num3 == 5 || num4 == 5 || num5 == 5) {
+        Isexistence = true;
+    }
+    else {
+        Isexistence = false;
+    }
+    return Isexistence;
+}
+
+int Sixs_check(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    if (num1 == 6 || num2 == 6 || num3 == 6 || num4 == 6 || num5 == 6) {
+        Isexistence = true;
+    }
+    else {
+        Isexistence = false;
+    }
+    return Isexistence;
+}
+
+int Three_of_a_kind_check(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    Order(num1, num2, num3, num4, num5);
+    if ((num1 == num3 && num4 == num5 && num3 != num4) || (num1 != num3 && num3 == num4 && num4 == num5)) {
+        Isexistence = true;
+    }
+    else {
+        Isexistence = false;
+    }
+    return Isexistence;
+}
+
+
+int Four_of_a_kind_check(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    Order(num1, num2, num3, num4, num5);
+    if ((num1 == num2 && num2 == num3 && num3 == num4 && num4 != num5) || (num2 == num3 && num3 == num4 && num4 == num5 && num1 != num2)) {
+        Isexistence = true;
+    }
+    else {
+        Isexistence = false;
+    }
+    return Isexistence;
+}
+
+int Full_House_check(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    Order(num1, num2, num3, num4, num5);
+    if ((num1 == num2 && num3 == num4 && num4 == num5 && num2 != num3) || (num1 == num2 && num2 == num3 && num4 == num5 && num3 != num4)) {
+        Isexistence = true;
+    }
+    else {
+        Isexistence = false;
+    }
+    return Isexistence;
+}
+
+int Small_Straight_check(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    Order(num1, num2, num3, num4, num5);
+    if ((num2 - num1 == 1 && num3 - num2 == 1 && num4 - num3 == 1 && num5 - num4 != 1) || (num2 - num1 != 1 && num3 - num2 == 1 && num4 - num3 == 1 && num5 - num4 == 1)) {
+        Isexistence = true;
+    }
+    else {
+        Isexistence = false;
+    }
+    return Isexistence;
+}
+
+int Large_Sraight_check(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    Order(num1, num2, num3, num4, num5);
+    if (num2 - num1 == 1 && num3 - num2 == 1 && num4 - num3 == 1 && num5 - num4 == 1) {
+        Isexistence = true;
+    }
+    else {
+        Isexistence = false;
+    }
+    return Isexistence;
+}
+
+int Yahtzee_check(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    if (num2 == num1 && num3 == num2 && num4 == num3 && num5 == num4) {
+        Isexistence = true;
+    }
+    else {
+        Isexistence = false;
+    }
+    return Isexistence;
+}
+
+int Chance_check(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence = true;
+    return Isexistence;
+}
+
+int Ones_score(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    Isexistence = Ones_check(num1, num2, num3, num4, num5);
+    int score = 0;
+    if (Isexistence) {
+        if (num1 == 1)
+            score++;
+        if (num2 == 1)
+            score++;
+        if (num3 == 1)
+            score++;
+        if (num4 == 1)
+            score++;
+        if (num5 == 1)
+            score++;
+        return score;
+    }
+    else
+        return 0;
+}
+
+
+
+int Twos_score(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    Isexistence = Ones_check(num1, num2, num3, num4, num5);
+    int score = 0;
+    if (Isexistence) {
+        if (num1 == 2)
+            score++;
+        if (num2 == 2)
+            score++;
+        if (num3 == 2)
+            score++;
+        if (num4 == 2)
+            score++;
+        if (num5 == 2)
+            score++;
+        return score * 2;
+    }
+    else
+        return 0;
+}
+
+
+int Threes_score(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    int score = 0;
+    Isexistence = Ones_check(num1, num2, num3, num4, num5);
+
+    if (Isexistence) {
+        if (num1 == 3)
+            score++;
+        if (num2 == 3)
+            score++;
+        if (num3 == 3)
+            score++;
+        if (num4 == 3)
+            score++;
+        if (num5 == 3)
+            score++;
+        return score * 3;
+    }
+    else
+        return 0;
+}
+
+int Fours_score(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    Isexistence = Ones_check(num1, num2, num3, num4, num5);
+    int score = 0;
+    if (Isexistence) {
+        if (num1 == 4)
+            score++;
+        if (num2 == 4)
+            score++;
+        if (num3 == 4)
+            score++;
+        if (num4 == 4)
+            score++;
+        if (num5 == 4)
+            score++;
+        return score * 4;
+    }
+    else
+        return 0;
+}
+
+int Fives_score(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    Isexistence = Ones_check(num1, num2, num3, num4, num5);
+    int score = 0;
+    if (Isexistence) {
+        if (num1 == 5)
+            score++;
+        if (num2 == 5)
+            score++;
+        if (num3 == 5)
+            score++;
+        if (num4 == 5)
+            score++;
+        if (num5 == 5)
+            score++;
+        return score * 5;
+    }
+    else
+        return 0;
+}
+
+int Sixs_score(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    Isexistence = Ones_check(num1, num2, num3, num4, num5);
+    int score = 0;
+    if (Isexistence) {
+        if (num1 == 6)
+            score++;
+        if (num2 == 6)
+            score++;
+        if (num3 == 6)
+            score++;
+        if (num4 == 6)
+            score++;
+        if (num5 == 6)
+            score++;
+        return score * 6;
+    }
+    else
+        return 0;
+}
+
+int Three_of_a_kind_score(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    Isexistence = Three_of_a_kind_check(num1, num2, num3, num4, num5);
+    if (Isexistence) {
+        int score = num1 + num2 + num3 + num4 + num5;
+        return score;
+    }
+    else
+        return 0;
+}
+
+int Four_of_a_kind_score(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    Isexistence = Four_of_a_kind_check(num1, num2, num3, num4, num5);
+    if (Isexistence) {
+        int score = num1 + num2 + num3 + num4 + num5;
+        return score;
+    }
+    else
+        return 0;
+
+}
+
+int Full_House_score(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    Isexistence = Full_House_check(num1, num2, num3, num4, num5);
+    if (Isexistence) {
+        return 25;
+    }
+    else
+        return 0;
+
+}
+
+int Small_Staight_score(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    Isexistence = Small_Straight_check(num1, num2, num3, num4, num5);
+    if (Isexistence) {
+        return 30;
+    }
+    else
+        return 0;
+
+}
+
+int Large_Staight_score(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    Isexistence = Large_Sraight_check(num1, num2, num3, num4, num5);
+    if (Isexistence) {
+        return 40;
+    }
+    else
+        return 0;
+
+}
+
+int Yahtzee_score(int num1, int num2, int num3, int num4, int num5) {
+    bool Isexistence;
+    Isexistence = Yahtzee_check(num1, num2, num3, num4, num5);
+    if (Isexistence) {
+        return 50;
+    }
+    else
+        return 0;
+
+}
+
+int Chance_score(int num1, int num2, int num3, int num4, int num5) 
+{
+    bool Isexistence;
+    Isexistence = Chance_check(num1, num2, num3, num4, num5);
+    if (Isexistence) 
+    {
+        int score = num1 + num2 + num3 + num4 + num5;
+        return score;
+    }
+    else
+        return 0;
+}
+
+int RollDie()
+{
+    return rand() % 6 + 1;
+}
+
+void RollDice(int& num1, int& num2, int& num3, int& num4, int& num5, int bool1, int bool2, int bool3, int bool4, int bool5)
+{
+    if (!bool1)
+        num1 = RollDie();
+    if (!bool2)
+        num2 = RollDie();
+    if (!bool3)
+        num3 = RollDie();
+    if (!bool4)
+        num4 = RollDie();
+    if (!bool5)
+        num5 = RollDie();
+}
+
+
+int sum(int num1, int num2, int num3, int num4, int num5, int num6, int num7, int num8, int num9, int numa, int numb, int numc, int numd)
+{int sum = 0;
+    if (num1 >= 0)
+        sum += num1;
+    if (num2 >= 0)
+        sum += num2;
+    if (num3 >= 0)
+        sum += num3;
+    if (num4 >= 0)
+        sum += num4;
+    if (num5 >= 0)
+        sum += num5;
+    if (num6 >= 0)
+        sum += num6;
+    if (num7 >= 0)
+        sum += num7;
+    if (num8 >= 0)
+        sum += num8;
+    if (num9 >= 0)
+        sum += num9;
+    if (numa >= 0)
+        sum += numa;
+    if (numb >= 0)
+        sum += numb;
+    if (numc >= 0)
+        sum += numc;
+    if (numd >= 0)
+        sum += numd;
+    return sum;
+}
+void table(int Kind,int Score)
+{
+    if (Kind == -1)
+        cout << setw(3) << Score << "     |" << endl;
+    else
+        cout << setw(7) << Score << " |" << endl;
+}
+void PrintScorecard(int die1, int die2, int die3, int die4, int die5, int num1, int num2, int num3, int num4, int num5, int num6, int num7, int num8, int num9, int numa, int numb, int numc, int numd)
+{
+    int Score_1, Score_2, Score_3, Score_4, Score_5, Score_6, Score_7, Score_8, Score_9, Score_a, Score_b, Score_c, Score_d;
+    Score_1 = Ones_score(die1, die2, die3, die4, die5);
+    Score_2 = Twos_score(die1, die2, die3, die4, die5);
+    Score_3 = Threes_score(die1, die2, die3, die4, die5);
+    Score_4 = Fours_score(die1, die2, die3, die4, die5);
+    Score_5 = Fives_score(die1, die2, die3, die4, die5);
+    Score_6 = Sixs_score(die1, die2, die3, die4, die5);
+    Score_7 = Three_of_a_kind_score(die1, die2, die3, die4, die5);
+    Score_8 = Four_of_a_kind_score(die1, die2, die3, die4, die5);
+    Score_9 = Full_House_score(die1, die2, die3, die4, die5);
+    Score_a = Small_Staight_score(die1, die2, die3, die4, die5);
+    Score_b = Large_Staight_score(die1, die2, die3, die4, die5);
+    Score_c = Yahtzee_score(die1, die2, die3, die4, die5);
+    Score_d = Chance_score(die1, die2, die3, die4, die5);
+
+    cout << " Roll #" << endl;
+    cout << "You rolled : " << die1 << " " << die2 << " " << die3 << " " << die4 << " " << die5 << endl;
+    cout << "|-------------------|--------|" << endl;
+    cout << "| Scenario          | Score  |" << endl;
+    cout << "|-------------------|--------|" << endl;
+    cout << "| (1) Ones          |"; table(num1, Score_1);
+    cout << "| (2) Twos          |"; table(num2, Score_2);
+    cout << "| (3) Threes        |"; table(num3, Score_3);
+    cout << "| (4) Fours         |"; table(num4, Score_4);
+    cout << "| (5) Fives         |"; table(num5, Score_5);
+    cout << "| (6) Sixes         |"; table(num6, Score_6);
+    cout << "|-------------------|--------|" << endl;
+    cout << "| (7) Three Kind    |"; table(num7, Score_7);
+    cout << "| (8) Four Kind     |"; table(num8, Score_8);
+    cout << "| (9) Full House    |"; table(num9, Score_9);
+    cout << "| (a) S Straight    |"; table(numa, Score_a);
+    cout << "| (b) L Straight    |"; table(numb, Score_b);
+    cout << "| (c) Yahtzee       |"; table(numc, Score_c);
+    cout << "| (d) Chance        |"; table(numd, Score_d);
+    cout << "|-------------------|--------|" << endl;
+    cout << "| Total             |" << setw(5) << sum(num1, num2, num3, num4, num5, num6, num7, num8, num9, numa, numb, numc, numd) << "   |" << endl;
+    cout << "|-------------------|--------|" << endl;
+
+}
+
+void Re_throw_check(int choice, bool& bool_choice)
+{
+    if (choice == 89)
+        bool_choice = true;
+    else
+        bool_choice = false;
+}
+
+int main()
+{
+    srand(SEED);
+    int die_point_one, die_point_two, die_point_three, die_point_four, die_point_five;
+    bool die_hold_one, die_hold_two, die_hold_three, die_hold_four, die_hold_five;
+    int Kind_1, Kind_2, Kind_3, Kind_4, Kind_5, Kind_6, Kind_7, Kind_8, Kind_9, Kind_a, Kind_b, Kind_c, Kind_d;
+    int Choice1, Choice2, Choice3, Choice4, Choice5;
+
+    for (int i = 0; i < 13; i++)
+    {
+        int round = 0;
+        do
+        {
+            die_point_one = RollDie();
+            die_point_two = RollDie();
+            die_point_three = RollDie();
+            die_point_four = RollDie();
+            die_point_five = RollDie();
+            Kind_1 = -1;
+            Kind_2 = -1;
+            Kind_3 = -1;
+            Kind_4 = -1;
+            Kind_5 = -1;
+            Kind_6 = -1;
+            Kind_7 = -1;
+            Kind_8 = -1;
+            Kind_9 = -1;
+            Kind_a = -1;
+            Kind_b = -1;
+            Kind_c = -1;
+            Kind_d = -1;
+            PrintScorecard(die_point_one, die_point_two, die_point_three, die_point_four, die_point_five, Kind_1, Kind_2, Kind_3, Kind_4, Kind_5, Kind_6, Kind_7, Kind_8, Kind_9, Kind_a, Kind_b, Kind_c, Kind_d);
+            cout << "Do you want to hold die 1?" << endl;
+            cin >> Choice1;
+            cout << "Do you want to hold die 2?" << endl;
+            cin >> Choice2;
+            cout << "Do you want to hold die 3?" << endl;
+            cin >> Choice3;
+            cout << "Do you want to hold die 4?" << endl;
+            cin >> Choice4;
+            cout << "Do you want to hold die 5?" << endl;
+            cin >> Choice5;
+            Re_throw_check(Choice1, die_hold_one);            
+            Re_throw_check(Choice2, die_hold_two);            
+            Re_throw_check(Choice3, die_hold_three);            
+            Re_throw_check(Choice4, die_hold_four);            
+            Re_throw_check(Choice5, die_hold_five);
+            RollDice(die_point_one, die_point_two, die_point_three, die_point_four, die_point_five, die_hold_one, die_hold_two, die_hold_three, die_hold_four, die_hold_five);
+            round++;
+            if (round == 3)
+            {
+                cout << "Select which category to score : ";
+                int select;
+                cin >> select;
+                break;
+            }
+        } while (die_hold_one && die_hold_two && die_hold_three && die_hold_four && die_hold_five);
+        cout << "Select which category to score : ";
+        int select;
+        cin >> select;
+        switch (select)
+        {
+        case 1:
+            if (Kind_1 == -1)
+                Kind_1 = Kind_1 * -1;
+            else
+                cout << "Bad selection!";
+            break;
+        case 2:
+            if (Kind_2 == -1)
+                Kind_2 = Kind_2 * -1;
+            else
+                cout << "Bad selection!";
+            break;
+        case 3:
+            if (Kind_3 == -1)
+                Kind_3 = Kind_3 * -1;
+            else
+                cout << "Bad selection!";
+            break;
+        case 4:
+            if (Kind_4 == -1)
+                Kind_4 = Kind_4 * -1;
+            else
+                cout << "Bad selection!";
+            break;
+        case 5:
+            if (Kind_5 == -1)
+                Kind_5 = Kind_5 * -1;
+            else
+                cout << "Bad selection!";
+            break;
+        case 6:
+            if (Kind_6 == -1)
+                Kind_6 = Kind_6 * -1;
+            else
+                cout << "Bad selection!";
+            break;
+        case 7:
+            if (Kind_7 == -1)
+                Kind_7 = Kind_7 * -1;
+            else
+                cout << "Bad selection!";
+            break;
+        case 8:
+            if (Kind_8 == -1)
+                Kind_8 = Kind_8 * -1;
+            else
+                cout << "Bad selection!";
+            break;
+        case 9:
+            if (Kind_9 == -1)
+                Kind_9 = Kind_9 * -1;
+            else
+                cout << "Bad selection!";
+            break;
+        case 'a':
+            if (Kind_a == -1)
+                Kind_a = Kind_a * -1;
+            else
+                cout << "Bad selection!";
+            break;
+        case 'b':
+            if (Kind_b == -1)
+                Kind_b = Kind_b * -1;
+            else
+                cout << "Bad selection!";
+            break;
+        case 'c':
+            if (Kind_c == -1)
+                Kind_c = Kind_c * -1;
+            else
+                cout << "Bad selection!";
+            break;
+        case 'd':
+            if (Kind_d == -1)
+                Kind_d = Kind_d * -1;
+            else
+                cout << "Bad selection!";
+            break;
+        }
+
+    }
+    return EXIT_SUCCESS;
+}
